@@ -115,6 +115,3 @@ f b b b b f 2 2 2 2 f d 4 . . . . . . . . . . .
 `, SpriteKind.Player)
 position = 60
 mySprite.setPosition(20, position)
-forever(function () {
-	
-})
