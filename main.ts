@@ -4,6 +4,9 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
         mySprite.setPosition(20, position)
     }
 })
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    mySprite2.destroy()
+})
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     mySprite.setImage(img`
 . . . . . . . f f . . . . . . . . . . . . . . . 
@@ -83,9 +86,12 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
         mySprite.setPosition(20, position)
     }
 })
+let random = 0
 let projectile: Sprite = null
+let mySprite2: Sprite = null
 let mySprite: Sprite = null
 let position = 0
+info.setLife(3)
 position = 0
 mySprite = sprites.create(img`
 . . . . . . . . . b 5 b . . . . 
@@ -107,3 +113,30 @@ c b d d d d d 5 5 5 5 5 5 5 b .
 `, SpriteKind.Player)
 position = 60
 mySprite.setPosition(20, position)
+forever(function () {
+    mySprite2 = sprites.create(img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . c c c c c c . . . 
+. . . . . . c 5 5 5 5 5 c c . . 
+. . . . . c 5 5 5 5 5 5 5 5 c . 
+. . . . c b b b b b b 5 5 5 c . 
+. . . . c b b b b 1 b b c c . . 
+. . . . c 1 1 b b 1 1 1 c . . . 
+. . . c 1 1 1 1 b 1 1 1 c . . . 
+. . . c 1 1 1 1 b 1 1 1 b b c c 
+. . c c d 1 1 1 b 1 b 1 5 5 5 c 
+. . c c d 1 c 1 1 1 b 1 b b 5 c 
+. c c d d 1 1 1 1 1 b 1 f b 5 c 
+f d d d 1 1 1 1 1 b b b f . c c 
+f f f f f 1 1 1 b b 5 5 5 f . . 
+. . . . . f f f 5 5 5 5 5 f . . 
+. . . . . . . . f f f f f f . . 
+`, SpriteKind.Enemy)
+    random = 30
+    mySprite2.setPosition(160, random * Math.randomRange(1, 3))
+    mySprite2.setVelocity(-30, 0)
+    pause(5000)
+    if (mySprite2.x == 10) {
+        info.changeLifeBy(-1)
+    }
+})
