@@ -2,6 +2,7 @@ namespace SpriteKind {
     export const 怪物攻擊 = SpriteKind.create()
     export const 攻擊 = SpriteKind.create()
     export const 公主 = SpriteKind.create()
+    export const Enemy2 = SpriteKind.create()
 }
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     if (position != 90) {
@@ -12,15 +13,16 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
 sprites.onOverlap(SpriteKind.怪物攻擊, SpriteKind.Player, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
     mySprite3.destroy()
+    music.pewPew.play()
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.怪物攻擊, function (sprite, otherSprite) {
-    mySprite3.destroy()
-    projectile.destroy()
+	
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     mySprite2.destroy()
     projectile.destroy()
     info.changeScoreBy(1)
+    score += 1
 })
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.公主, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
@@ -71,6 +73,7 @@ f e f e 4 4 e b f 4 4 e e f . . . . . . . . . .
 . . . . . . 4 4 4 4 . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, mySprite, 100, 0)
+    music.pewPew.play()
     pause(1000)
     mySprite.setImage(img`
 . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -105,11 +108,18 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
         mySprite.setPosition(20, position)
     }
 })
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy2, function (sprite, otherSprite) {
+    monster2.destroy()
+    projectile.destroy()
+    info.changeScoreBy(1)
+    score += 1
+})
 let a = 0
 let speed = 0
 let random = 0
-let mySprite2: Sprite = null
+let monster2: Sprite = null
 let projectile: Sprite = null
+let mySprite2: Sprite = null
 let mySprite3: Sprite = null
 let mySprite: Sprite = null
 let position = 0
@@ -251,6 +261,10 @@ f b b b b f 2 2 2 2 f d 4 . . . . . . . . . . .
 position = 60
 mySprite.setPosition(20, position)
 info.setScore(0)
+let score = 1
+forever(function () {
+    music.playMelody("G B A G C5 B A B ", 120)
+})
 forever(function () {
     mySprite2 = sprites.create(img`
 . . . . . . . . . . . . . . . . 
@@ -275,6 +289,31 @@ f f f f f 1 1 1 b b 5 5 5 f . .
     a = info.score()
     mySprite2.setPosition(160, random * Math.randomRange(1, 3))
     mySprite2.setVelocity(speed - a, 0)
+    if (info.score() % 3 == Math.randomRange(0, 2)) {
+        monster2 = sprites.create(img`
+. . . . . . 5 . 5 . . . . . . . 
+. . . . . f 5 5 5 f . . . . . . 
+. . . . f 6 2 5 5 6 f . . . . . 
+. . . f 6 6 6 6 1 6 6 f . . . . 
+. . . f 6 6 6 6 6 1 6 f . . . . 
+. . . f d f d 6 6 6 1 f . . . . 
+. . . f d f d 6 6 6 6 f f . . . 
+. . . f d 3 d d 6 6 6 f 6 f . . 
+. . . . f d d d f f 6 f f . . . 
+. . . . . f f 5 3 f 6 6 6 f . . 
+. . . . f 5 3 3 f f f f f . . . 
+. . . . f 3 3 f d f . . . . . . 
+. . . . . f 3 f d f . . . . . . 
+. . . . f 3 5 3 f d f . . . . . 
+. . . . f f 3 3 f f . . . . . . 
+. . . . . . f f f . . . . . . . 
+`, SpriteKind.Enemy2)
+        random = 30
+        speed = -30
+        a = info.score() * 3
+        monster2.setPosition(160, random * Math.randomRange(1, 3))
+        monster2.setVelocity(speed - a, 0)
+    }
     pause(5000)
 })
 forever(function () {
