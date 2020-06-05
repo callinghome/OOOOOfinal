@@ -116,16 +116,16 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy2, function (sprite, ot
     score += 1
 })
 let a = 0
-let speed = 0
 let random = 0
+let speed = 0
 let projectile: Sprite = null
 let mySprite2: Sprite = null
 let mySprite3: Sprite = null
 let monster2: Sprite = null
 let mySprite: Sprite = null
 let position = 0
+let score = 240
 game.splash("怪物到樹林-1 被餅乾打到-1 打到怪物得分+1", "按下A遊戲開始")
-scene.setBackgroundColor(9)
 let mySprite4 = sprites.create(img`
 . . . . . . . . . . . . . . . c c . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . c c c 6 5 c 6 6 . . . . . . . . . . . . 
@@ -262,9 +262,28 @@ f b b b b f 2 2 2 2 f d 4 . . . . . . . . . . .
 position = 60
 mySprite.setPosition(20, position)
 info.setScore(0)
-let score = 1
+score = 1
 forever(function () {
-    music.playMelody("G B A G C5 B A B ", 120)
+    if (0 <= info.score() && info.score() <= 10) {
+        scene.setBackgroundColor(9)
+        speed = 240
+    }
+    if (10 < info.score() && info.score() <= 20) {
+        scene.setBackgroundColor(7)
+        speed = 260
+    }
+    if (20 < info.score() && info.score() <= 30) {
+        scene.setBackgroundColor(5)
+        speed = 280
+    }
+    if (30 < info.score() && info.score() <= 40) {
+        scene.setBackgroundColor(4)
+        speed = 300
+    }
+    if (40 < info.score() && info.score() <= 50) {
+        scene.setBackgroundColor(2)
+        speed = 320
+    }
 })
 forever(function () {
     mySprite2 = sprites.create(img`
@@ -339,4 +358,8 @@ forever(function () {
     mySprite3.setPosition(mySprite2.x - 20, mySprite2.y)
     mySprite3.setVelocity(-50, 0)
     pause(5000)
+})
+forever(function () {
+    music.playMelody("G B A G C5 B A B ", speed)
+    music.playMelody("C5 B A G F E D C ", speed)
 })
