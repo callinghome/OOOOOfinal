@@ -4,6 +4,10 @@ namespace SpriteKind {
     export const 公主 = SpriteKind.create()
     export const Enemy2 = SpriteKind.create()
 }
+sprites.onOverlap(SpriteKind.Enemy2, SpriteKind.公主, function (sprite, otherSprite) {
+    info.changeLifeBy(-1)
+    monster2.destroy()
+})
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     if (position != 90) {
         position += 30
@@ -14,9 +18,6 @@ sprites.onOverlap(SpriteKind.怪物攻擊, SpriteKind.Player, function (sprite, 
     info.changeLifeBy(-1)
     mySprite3.destroy()
     music.pewPew.play()
-})
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.怪物攻擊, function (sprite, otherSprite) {
-	
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     mySprite2.destroy()
@@ -117,10 +118,10 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy2, function (sprite, ot
 let a = 0
 let speed = 0
 let random = 0
-let monster2: Sprite = null
 let projectile: Sprite = null
 let mySprite2: Sprite = null
 let mySprite3: Sprite = null
+let monster2: Sprite = null
 let mySprite: Sprite = null
 let position = 0
 game.splash("怪物到樹林-1 被餅乾打到-1 打到怪物得分+1", "按下A遊戲開始")
